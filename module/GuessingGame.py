@@ -62,6 +62,51 @@ class GuessingGame(commands.Cog):
         [Format: %stopgg]"""
         await ex.stop_game(ctx, ex.cache.guessing_games)
 
+    @commands.command()
+    async def gglist(self, ctx, set=1):
+        """Shows the groups in your custom guessing game set.
+        [Format: %gglist (preset number)]"""
+        if not await ex.u_patreon.check_if_patreon(ctx.author.id):
+            return await ctx.send("> You must be a patron in order to create your own custom guessing game sets.")
+        idol_sets = ex.cache.guessing_game_set.get(ctx.guild.id)
+        if not idol_sets:
+            return await ctx.send(f"There are currently no groups in set {set}.")
+
+    @commands.command()
+    async def ggedit(self, ctx, set=1):
+        """Enables edit mode for the groups available in a guessing game set.
+        [Format: %%ggedit (set number)"""
+        start_message = f"""
+You are now editing guessing game set {set}.
+
+To add a group, use a `+` followed by the name of the group you want added to this set (one group per message).
+To remove a group, use a `-` followed by the name of the group to be removed (one group per message).
+
+Example: `+loona` to add Loona to the set. `-bts` to remove bts from the set.
+"""
+        await ctx.send(start_message)
+
+    @commands.command(aliases=["stopggedit"])
+    async def ggstopedit(self, ctx):
+        """Force ends the editing of a server's guessing game idol preset.
+        [Format: %ggstopedit]"""
+        pass
+
+    @staticmethod
+    async def process_guessing_game_edit_set(message):
+        if not message.content or message.author.bot:
+            return
+
+
+    @commands.command()
+    async def ggtest(self, ctx, *, group_name):
+        group = next(iter(await ex.u_group_members.get_group_where_group_matches_name(group_name)), None)
+        idol_string = ""
+        for idol_id in group.members:
+            idol = await ex.u_group_members.get_member(idol_id)
+            idol_string += f"{idol.full_name} - {idol.stage_name}\n"
+        await ctx.send(idol_string)
+
     @staticmethod
     async def start_game(ctx, rounds, timeout, gender, difficulty):
         game = Game(ctx, max_rounds=rounds, timeout=timeout, gender=gender, difficulty=difficulty)
@@ -80,7 +125,6 @@ class GuessingGame(commands.Cog):
     # async def disabled_weverse(self, ctx):
     #     await ctx.send(f"""**Guessing Game will be disabled until we find out Irene's API issue.**""")
     #     raise Exception
-
 
 # noinspection PyBroadException,PyPep8
 class Game:

@@ -48,3 +48,11 @@ class GuessingGame:
             return 0
         difficulty_score = user_scores.get(difficulty) or 0
         return difficulty_score
+
+    @staticmethod
+    async def process_set_edit(editing_channel, editor_id):
+        stop_phrases = ['quit', 'stop', 'end']
+
+        def check_user_edit_message(message):
+            if message.channel != editing_channel or message.author.id != editor_id:
+                return False
