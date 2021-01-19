@@ -63,21 +63,21 @@ class GuessingGame(commands.Cog):
         await ex.stop_game(ctx, ex.cache.guessing_games)
 
     @commands.command()
-    async def gglist(self, ctx, set=1):
+    async def gglist(self, ctx, group_set=1):
         """Shows the groups in your custom guessing game set.
         [Format: %gglist (preset number)]"""
         if not await ex.u_patreon.check_if_patreon(ctx.author.id):
             return await ctx.send("> You must be a patron in order to create your own custom guessing game sets.")
         idol_sets = ex.cache.guessing_game_set.get(ctx.guild.id)
         if not idol_sets:
-            return await ctx.send(f"There are currently no groups in set {set}.")
+            return await ctx.send(f"There are currently no groups in set {group_set}.")
 
     @commands.command()
-    async def ggedit(self, ctx, set=1):
+    async def ggedit(self, ctx, group_set=1):
         """Enables edit mode for the groups available in a guessing game set.
         [Format: %%ggedit (set number)"""
         start_message = f"""
-You are now editing guessing game set {set}.
+You are now editing guessing game set {group_set}.
 
 To add a group, use a `+` followed by the name of the group you want added to this set (one group per message).
 To remove a group, use a `-` followed by the name of the group to be removed (one group per message).
