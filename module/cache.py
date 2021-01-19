@@ -187,6 +187,10 @@ class Cache(commands.Cog):
             'all': set(self.idols)
         }
 
+        # all guessing game sets for a server
+        # { user_id : [ idol_set ] }
+        self.guessing_game_set = {}
+
         # bracket position for bias game stored due to annoyance when using previous x and y values.
         # counting starts from left to right, bottom to top
         self.stored_bracket_positions = {
