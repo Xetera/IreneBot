@@ -56,3 +56,8 @@ class GuessingGame:
         def check_user_edit_message(message):
             if message.channel != editing_channel or message.author.id != editor_id:
                 return False
+            if message.content.lower()[0] in ['+', '-']:
+                return True
+            if message.content.lower() in stop_phrases:
+                return True
+
